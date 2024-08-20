@@ -1,0 +1,22 @@
+name: Resource Published
+
+# Franklin Sidekick will trigger this workflow when a resource is published
+on: 
+  repository_dispatch:
+    types:
+      - resource-published
+
+jobs:
+  post-publish:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Show Event Payload
+      run: |
+        echo "Status: ${{ github.event.client_payload.status }}"
+        echo "Path: ${{ github.event.client_payload.path }}"
+    - name: Checkout
+      uses: actions/checkout@v3
+    - name: Update Metadata
+      run: node .github/scripts/update_metadata.js
+      env:
+        SLACK_WEBHOOK: ${{ secrets.UPDATE_METADATA_WEBHOOK }}         
