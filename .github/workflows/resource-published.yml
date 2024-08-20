@@ -19,4 +19,4 @@ jobs:
     - name: Update Metadata
       run: node .github/scripts/update_metadata.js
       env:
-        SLACK_WEBHOOK: ${{ secrets.UPDATE_METADATA_WEBHOOK }}         
+        UPDATE_METADATA_WEBHOOK: ${{ secrets.UPDATE_METADATA_WEBHOOK }}         
