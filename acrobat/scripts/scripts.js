@@ -451,6 +451,18 @@ const { ietf } = getLocale(locales);
     });
   }
 
+  let fasttrack = parseInt(document.querySelector('meta[name="fastrack"]')?.content);
+  fasttrack = fasttrack || 1;
+  const sections = [...document.querySelectorAll('.section')];
+  const classes = [];
+  for (let i = 0; i < fasttrack; i++) {
+    [...sections[i].children].forEach((e) => { classes.push(e.classList[0]); });
+  }
+  for (let c of new Set(classes)) {
+    loadLink(`${miloLibs}/blocks/${c}/${c}.js`, { as: 'script', rel: 'preload', crossorigin: 'anonymous' });
+    loadStyle(`${miloLibs}/blocks/${c}/${c}.css`);
+  }
+
   // Import base milo features and run them
   const { loadArea, setConfig, loadLana, getMetadata, loadIms } = await import(`${miloLibs}/utils/utils.js`);
   addLocale(ietf);
