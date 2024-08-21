@@ -453,7 +453,7 @@ const { ietf } = getLocale(locales);
 
   let fasttrack = parseInt(document.querySelector('meta[name="fastrack"]')?.content);
   fasttrack = fasttrack || 1;
-  const sections = [...document.querySelectorAll('.section')];
+  const sections = [...document.querySelectorAll('body > main > div')];
   const classes = [];
   for (let i = 0; i < fasttrack; i++) {
     [...sections[i].children].forEach((e) => { classes.push(e.classList[0]); });
