@@ -456,7 +456,9 @@ const { ietf } = getLocale(locales);
   const sections = [...document.querySelectorAll('body > main > div')];
   const classes = [];
   for (let i = 0; i < fasttrack; i++) {
-    [...sections[i].children].forEach((e) => { classes.push(e.classList[0]); });
+    [...sections[i].children].forEach((e) => {
+      if (!e.classList[0].match(/breadcrumbs|section-metadata/)) classes.push(e.classList[0]);
+    });
   }
   for (let c of new Set(classes)) {
     loadLink(`${miloLibs}/blocks/${c}/${c}.js`, { as: 'script', rel: 'preload', crossorigin: 'anonymous' });
