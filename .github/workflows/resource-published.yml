@@ -33,11 +33,15 @@ jobs:
 
     - name: Install playwright browsers
       if: ${{ endsWith(github.event.client_payload.path, '.md') }} && steps.cache.outputs.cache-hit != 'true'
-      run: npx playwright install 
+      run: npx playwright install --with-deps chromium
 
     - name: Run Lighthouse Test
       if: ${{ endsWith(github.event.client_payload.path, '.md') }}
       run: node tools/lighthouse/lighthouse.js ${{ github.event.client_payload.path }}
+
+    - name: Run Page Load Analysis
+      if: ${{ endsWith(github.event.client_payload.path, '.md') }}
+      run: node tools/pageload/analysis.js ${{ github.event.client_payload.path }}
 
     - name: Update Metadata
       if: ${{ endsWith(github.event.client_payload.path, '.md') }}
