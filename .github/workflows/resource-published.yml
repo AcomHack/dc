@@ -45,6 +45,6 @@ jobs:
 
     - name: Update Metadata
       if: ${{ endsWith(github.event.client_payload.path, '.md') }}
-      run: node .github/scripts/update_metadata.js
+      run: node .github/scripts/update_metadata.js  ${{ github.event.client_payload.path }}
       env:
         UPDATE_METADATA_WEBHOOK: ${{ secrets.UPDATE_METADATA_WEBHOOK }}         
