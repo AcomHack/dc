@@ -14,8 +14,13 @@ jobs:
       run: |
         echo "Status: ${{ github.event.client_payload.status }}"
         echo "Path: ${{ github.event.client_payload.path }}"
+
     - name: Checkout
       uses: actions/checkout@v3
+
+    - name: Run Lighthouse Test
+      uses: node tools/lighthouse/lighthouse.js ${{ github.event.client_payload.path }}
+
     - name: Update Metadata
       run: node .github/scripts/update_metadata.js
       env:

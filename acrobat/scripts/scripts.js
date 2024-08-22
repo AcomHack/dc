@@ -451,13 +451,15 @@ const { ietf } = getLocale(locales);
     });
   }
 
-  let fasttrack = parseInt(document.querySelector('meta[name="fastrack"]')?.content);
+  // Preload block scripts
+  let fasttrack = parseInt(document.querySelector('meta[name="fasttrack"]')?.content);
   fasttrack = fasttrack || 1;
   const sections = [...document.querySelectorAll('body > main > div')];
   const classes = [];
   for (let i = 0; i < fasttrack; i++) {
     [...sections[i].children].forEach((e) => {
       if (!e.classList[0].match(/breadcrumbs|section-metadata/)) classes.push(e.classList[0]);
+      [...e.querySelectorAll('img')].forEach((x) => x.setAttribute('loading', 'eager'));
     });
   }
   for (let c of new Set(classes)) {
