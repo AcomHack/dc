@@ -16,12 +16,27 @@ jobs:
         echo "Path: ${{ github.event.client_payload.path }}"
 
     - name: Checkout
+      if: ${{ endsWith(github.event.client_payload.path, '.md') }}
       uses: actions/checkout@v3
 
+    - name: Cache dependencies
+      if: ${{ endsWith(github.event.client_payload.path, '.md') }}
+      id: cache
+      uses: actions/cache@v3
+      with:
+        path: ./node_modules
+        key: modules-${{ hashFiles('package-lock.json') }}-${{ runner.os }}
+
+    - name: Install dependencies
+      if: ${{ endsWith(github.event.client_payload.path, '.md') }} && steps.cache.outputs.cache-hit != 'true'
+      run: npm ci --ignore-scripts
+
     - name: Run Lighthouse Test
-      uses: node tools/lighthouse/lighthouse.js ${{ github.event.client_payload.path }}
+      if: ${{ endsWith(github.event.client_payload.path, '.md') }}
+      run: node tools/lighthouse/lighthouse.js ${{ github.event.client_payload.path }}
 
     - name: Update Metadata
+      if: ${{ endsWith(github.event.client_payload.path, '.md') }}
       run: node .github/scripts/update_metadata.js
       env:
         UPDATE_METADATA_WEBHOOK: ${{ secrets.UPDATE_METADATA_WEBHOOK }}         
