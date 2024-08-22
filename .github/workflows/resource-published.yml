@@ -31,6 +31,10 @@ jobs:
       if: ${{ endsWith(github.event.client_payload.path, '.md') }} && steps.cache.outputs.cache-hit != 'true'
       run: npm ci --ignore-scripts
 
+    - name: Install playwright browsers
+      if: ${{ endsWith(github.event.client_payload.path, '.md') }} && steps.cache.outputs.cache-hit != 'true'
+      run: npx playwright install 
+
     - name: Run Lighthouse Test
       if: ${{ endsWith(github.event.client_payload.path, '.md') }}
       run: node tools/lighthouse/lighthouse.js ${{ github.event.client_payload.path }}
